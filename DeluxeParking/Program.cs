@@ -5,7 +5,9 @@ namespace DeluxeParking
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            Person person = new Person(34, "David");
+            
+            Console.WriteLine($"Hello {person.Name}, you are {person.Age} years old");
         }
     }
 }
