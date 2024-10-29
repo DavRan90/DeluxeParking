@@ -6,12 +6,17 @@ using System.Threading.Tasks;
 
 namespace DeluxeParking
 {
-    internal class Bus
+    internal class Bus : Vehicle
     {
         public int NumberOfPassangers { get; set; }
-        public Bus(int numberOfPassangers)
+        public Bus(string licensePlate, string color, int numberOfPassangers) : base(licensePlate, color)
         {
             NumberOfPassangers = numberOfPassangers;
+        }
+        public override void VehicleInfo()
+        {
+            base.VehicleInfo();
+            Console.WriteLine($"Bus | {LicensePlate} | Color: {Color} | Passangers: {NumberOfPassangers}");
         }
     }
 }

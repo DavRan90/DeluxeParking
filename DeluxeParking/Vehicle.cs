@@ -15,5 +15,13 @@ namespace DeluxeParking
             LicensePlate = licensePlate;
             Color = color;
         }
+        public virtual void VehicleInfo()
+        {
+            
+        }
+
     }
+    
+        
+
 }
