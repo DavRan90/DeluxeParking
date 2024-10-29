@@ -9,9 +9,15 @@ namespace DeluxeParking
     internal class ParkingLot
     {
         public int ParkingSpaces { get; set; }
-        public ParkingLot(int parkingSpaces)
+        List<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
+
+        public ParkingLot(int parkingSpaces, List<Vehicle> vehicles)
         {
             ParkingSpaces = parkingSpaces;
+        }
+        public void PrintParkedVehicles()
+        {
+
         }
     }
 }
