@@ -25,7 +25,6 @@ namespace DeluxeParking
         }
         public static void GenerateMenu(List<Vehicle> vehicles)
         {
-            Random random = new Random();
             Console.WriteLine("==========================");
             Console.WriteLine("1. Park car");
             Console.WriteLine("2. Park motorcycle");
@@ -33,6 +32,12 @@ namespace DeluxeParking
             Console.WriteLine("==========================");
             ConsoleKeyInfo key = Console.ReadKey(true);
             Console.Clear();
+            CreateVehicle(key, vehicles);
+            
+        }
+        public static void CreateVehicle(ConsoleKeyInfo key, List<Vehicle> vehicles)
+        {
+            Random random = new Random();
             switch (key.KeyChar)
             {
                 case '1':
@@ -47,9 +52,7 @@ namespace DeluxeParking
                     Bus bus = new Bus(GenerateRandomPlate(), GenerateColor(), random.Next(20, 40));
                     vehicles.Add(bus);
                     break;
-
             }
-
         }
         public static string GenerateRandomPlate()
         {
