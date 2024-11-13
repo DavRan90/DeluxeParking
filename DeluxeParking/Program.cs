@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Drawing;
 
 namespace DeluxeParking
 {
@@ -7,17 +8,20 @@ namespace DeluxeParking
     {
         static void Main(string[] args)
         {
-            
+
             List<Vehicle> vehicles = new List<Vehicle>();
-            ParkingLot parking = new ParkingLot(15, vehicles);
+            //Vehicle[,] vehicles = new Vehicle[16, 2];
+
+            //ParkingLot parking = new ParkingLot(15, vehicles);
+            ParkingSpot[,] parkingLot = new ParkingSpot[16,2];
             Random random = new Random();
             while (true)
             {
                 
-                GenerateMenu(vehicles);
+                GenerateMenu(vehicles, parkingLot);
                 for (int i = 0; i < vehicles.Count; i++)
                 {
-                    
+                    Console.Write("Parking spot " + (i+1) + " | ");
                     vehicles[i].VehicleInfo();
                 }
                 
@@ -26,7 +30,7 @@ namespace DeluxeParking
             
 
         }
-        public static void GenerateMenu(List<Vehicle> vehicles)
+        public static void GenerateMenu(List<Vehicle> vehicles, ParkingSpot[,] parkingLot)
         {
             
             Console.WriteLine("==========================");
@@ -40,7 +44,9 @@ namespace DeluxeParking
             {
                 case '1':
                     Console.Clear();
-                    ParkVehicle(vehicles);
+                    
+                    ParkVehicle(vehicles, parkingLot);
+                    
                     break;
                 case '2':
                     Console.WriteLine("What is the license plate of the car to un-park?");
@@ -50,7 +56,11 @@ namespace DeluxeParking
                         if (vehicles[i].LicensePlate == plate || vehicles[i].LicensePlate.Remove(3, 1) == plate)
                         {
                             Console.Clear();
-                            Console.WriteLine("Removing vehicle with license plate: " + vehicles[i].LicensePlate);
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("REMOVED: ");
+                            vehicles[i].VehicleInfo();
+                            Console.WriteLine();
+                            Console.ForegroundColor = ConsoleColor.White;
                             vehicles.RemoveAt(i);
                             return;
                         }
@@ -64,7 +74,7 @@ namespace DeluxeParking
             
             
         }
-        public static void ParkVehicle(List<Vehicle> vehicles)
+        public static void ParkVehicle(List<Vehicle> vehicles, ParkingSpot[,] parkingLot)
         {
             Random random = new Random();
             int k = random.Next(0, 3);
@@ -73,6 +83,7 @@ namespace DeluxeParking
                 case 0:
                     Car car = new Car(GenerateRandomPlate(), GenerateColor(), random.Next(0, 2) == 1 ? true : false);
                     vehicles.Add(car);
+                    //parkingLot[0, 0] = car;
                     break;
                 case 1:
                     Motorcycle motorcycle = new Motorcycle(GenerateRandomPlate(), GenerateColor(), "Honda");
