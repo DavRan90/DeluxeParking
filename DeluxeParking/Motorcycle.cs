@@ -13,10 +13,10 @@ namespace DeluxeParking
         {
             Brand = brand;
         }
-        public override void VehicleInfo()
+        public override void WriteVehicleInfo()
         {
-            base.VehicleInfo();
-            Console.WriteLine($"| Motorcycle\t | {LicensePlate} | Color: {Color} \t| Brand: {Brand}");
+            base.WriteVehicleInfo();
+            Console.WriteLine($"| Motorcycle\t | {LicensePlate} | Color: {Color} \t| Brand: {Brand} \t\t| ParkingFee: {ParkingFee}");
         }
     }
 }

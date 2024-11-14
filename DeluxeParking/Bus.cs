@@ -13,10 +13,10 @@ namespace DeluxeParking
         {
             NumberOfPassangers = numberOfPassangers;
         }
-        public override void VehicleInfo()
+        public override void WriteVehicleInfo()
         {
-            base.VehicleInfo();
-            Console.WriteLine($"| Bus\t\t | {LicensePlate} | Color: {Color} \t| Passangers: {NumberOfPassangers}");
+            base.WriteVehicleInfo();
+            Console.WriteLine($"| Bus\t\t | {LicensePlate} | Color: {Color} \t| Passangers: {NumberOfPassangers} \t| ParkingFee: {ParkingFee}");
         }
     }
 }

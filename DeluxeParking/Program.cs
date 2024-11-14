@@ -8,7 +8,7 @@ namespace DeluxeParking
     {
         static void Main(string[] args)
         {
-            Vehicle[,] parkedVehicles = new Vehicle[16, 2];
+            Vehicle[,] parkedVehicles = new Vehicle[15, 2];
 
             while (true)
             {
@@ -16,60 +16,12 @@ namespace DeluxeParking
                 WriteParking(parkedVehicles);
             }
         }
-        public static void WriteParking(Vehicle[,] parkedVehicles)
-        {
-            for (int i = 0; i < parkedVehicles.GetLength(0); i++)
-            {
-                if (i == 0 || i % 2 == 0)
-                {
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                }
-                if (parkedVehicles[i, 0] is Motorcycle)
-                {
-                    Console.Write(string.Format("{0, -16}", $"Parking spot {i + 1} "));
-                    parkedVehicles[i, 0].VehicleInfo();
-                    if (parkedVehicles[i, 1] != null)
-                    {
-                        Console.Write(string.Format("{0, -16}", $"Parking spot {i + 1} "));
-                        parkedVehicles[i, 1].VehicleInfo();
-                    }
-                    else
-                    {
-                        Console.Write(string.Format("{0, -16}", $"Parking spot {i + 1}"));
-                        Console.Write("| has one more empty spot for a bike\n");
-                    }
-                }
-                else if (parkedVehicles[i, 0] != null)
-                {
-                    Console.Write(string.Format("{0, -16}", $"Parking spot {i + 1} "));
-                    parkedVehicles[i, 0].VehicleInfo();
-                }
-                else if (parkedVehicles[i, 1] != null)
-                {
-                    Console.Write(string.Format("{0, -16}", $"Parking spot {i + 1}"));
-                    Console.Write("| has one more empty spot for a bike\n");
-
-                    Console.Write(string.Format("{0, -16}", $"Parking spot {i + 1} "));
-                    parkedVehicles[i, 1].VehicleInfo();
-                }
-                else
-                {
-                    Console.Write(string.Format("{0, -16}", $"Parking spot {i + 1}"));
-                    Console.Write("| is empty\n");
-                }
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-        }
         public static void GenerateMenu(Vehicle[,] parkedVehicles)
         {
-            Console.WriteLine("=================================================================================");
+            Console.WriteLine("==================================================================================================================");
             Console.WriteLine("1. Park vehicle");
             Console.WriteLine("2. Un-park vehicle");
-            Console.WriteLine("=================================================================================");
+            Console.WriteLine("==================================================================================================================");
             ConsoleKeyInfo key = Console.ReadKey(true);
 
             switch (key.KeyChar)
@@ -81,6 +33,63 @@ namespace DeluxeParking
                 case '2':
                     UnParkVehicle(parkedVehicles);
                     break;
+            }
+        }
+        public static void WriteParking(Vehicle[,] parkedVehicles)
+        {
+            Console.WriteLine("==================================================================================================================");
+            for (int i = 0; i < parkedVehicles.GetLength(0); i++)
+            {
+                string format = "{0, -23}";
+                if (parkedVehicles[i, 0] is Motorcycle)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write(string.Format(format, $"Parking spot {i + 1} "));
+                    parkedVehicles[i, 0].WriteVehicleInfo();
+                    parkedVehicles[i, 0].ParkingFee += 1.5;
+                    if (parkedVehicles[i, 1] is Motorcycle)
+                    {
+                        Console.Write(string.Format(format, $"Parking spot {i + 1} "));
+                        parkedVehicles[i, 1].WriteVehicleInfo();
+                        parkedVehicles[i, 1].ParkingFee += 1.5;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write(string.Format(format, $"Parking spot {i + 1}"));
+                        Console.Write("| has one more empty spot for a bike\n");
+                    }
+                }
+                else if (parkedVehicles[i, 0] is Car)
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write(string.Format(format, $"Parking spot {i + 1} "));
+                    parkedVehicles[i, 0].WriteVehicleInfo();
+                    parkedVehicles[i, 0].ParkingFee += 1.5;
+                }
+                else if (parkedVehicles[i, 0] is Bus)
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.Write(string.Format(format, $"Parking spot {i + 1} and {i + 2} "));
+                    parkedVehicles[i, 0].WriteVehicleInfo();
+                    parkedVehicles[i, 0].ParkingFee += 3;
+                    i++;
+                }
+                else if (parkedVehicles[i, 1] is Motorcycle)
+                {
+                    Console.Write(string.Format(format, $"Parking spot {i + 1}"));
+                    Console.Write("| has one more empty spot for a bike\n");
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write(string.Format(format, $"Parking spot {i + 1} "));
+                    parkedVehicles[i, 1].WriteVehicleInfo();
+                    parkedVehicles[i, 1].ParkingFee += 1.5;
+                }
+                else
+                {
+                    Console.Write(string.Format(format, $"Parking spot {i + 1}"));
+                    Console.Write("| is empty\n");
+                }
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
         public static void UnParkVehicle(Vehicle[,] parkedVehicles)
@@ -98,12 +107,13 @@ namespace DeluxeParking
                             Console.Clear();
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.Write("REMOVED:\t");
-                            parkedVehicles[i, j].VehicleInfo();
+                            parkedVehicles[i, j].WriteVehicleInfo();
                             Console.Write("From spot " + (i + 1));
 
                             if (parkedVehicles[i, j] is Bus)
                             {
-                                Console.Write(" and " + (i + 2) + "\n");
+                                Console.Write(" and " + (i + 2));
+                                Console.WriteLine($"\tThe cost for the parking totals: {parkedVehicles[i, j].ParkingFee} SEK");
                                 Console.ForegroundColor = ConsoleColor.White;
                                 parkedVehicles[i, j] = null;
                                 parkedVehicles[i + 1, j] = null;
@@ -111,8 +121,8 @@ namespace DeluxeParking
                             }
                             else
                             {
+                                Console.WriteLine($"\tThe cost for the parking totals: {parkedVehicles[i, j].ParkingFee} SEK");
                                 Console.ForegroundColor = ConsoleColor.White;
-                                Console.WriteLine();
                                 parkedVehicles[i, j] = null;
                                 return;
                             }
