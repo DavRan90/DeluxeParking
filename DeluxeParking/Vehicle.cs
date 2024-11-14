@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DeluxeParking
 {
-    class Vehicle
+    class Vehicle : IVehicle
     {
         public string LicensePlate { get; set; }
         public string Color { get; set; }
@@ -19,9 +19,10 @@ namespace DeluxeParking
         {
             
         }
-
     }
-    
-        
-
+    interface IVehicle
+    {
+        public string LicensePlate { get; set; }
+        public string Color { get; set; }
+    }
 }

@@ -8,121 +8,127 @@ namespace DeluxeParking
     {
         static void Main(string[] args)
         {
-            Vehicle[,] vehicles = new Vehicle[16, 2];
+            Vehicle[,] parkedVehicles = new Vehicle[16, 2];
 
-            Random random = new Random();
             while (true)
             {
-                GenerateMenu(vehicles);
-                WriteGarage(vehicles);
+                GenerateMenu(parkedVehicles);
+                WriteParking(parkedVehicles);
             }
         }
-        public static void WriteGarage(Vehicle[,] vehicles)
+        public static void WriteParking(Vehicle[,] parkedVehicles)
         {
-            for (int i = 0; i < vehicles.GetLength(0); i++)
+            for (int i = 0; i < parkedVehicles.GetLength(0); i++)
             {
-                if (vehicles[i, 0] is Motorcycle)
+                if (i == 0 || i % 2 == 0)
                 {
-                    Console.Write("Parking spot " + (i + 1) + " | ");
-                    vehicles[i, 0].VehicleInfo();
-                    if (vehicles[i, 1] != null)
-                    {
-                        Console.Write("Parking spot " + (i + 1) + " | ");
-                        vehicles[i, 1].VehicleInfo();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Parking spot " + (i + 1) + " | has one more empty spot for a bike");
-                    }
-                }
-                else if (vehicles[i, 0] != null)
-                {
-                    Console.Write("Parking spot " + (i + 1) + " | ");
-                    vehicles[i, 0].VehicleInfo();
-                }
-                else if (vehicles[i, 1] != null)
-                {
-                    Console.WriteLine("Parking spot " + (i + 1) + " | has one more empty spot for a bike");
-                    Console.Write("Parking spot " + (i + 1) + " | ");
-                    vehicles[i, 1].VehicleInfo();
+                    Console.ForegroundColor = ConsoleColor.Blue;
                 }
                 else
                 {
-                    Console.WriteLine("Parking spot " + (i + 1) + " | is empty");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
                 }
+                if (parkedVehicles[i, 0] is Motorcycle)
+                {
+                    Console.Write(string.Format("{0, -16}", $"Parking spot {i + 1} "));
+                    parkedVehicles[i, 0].VehicleInfo();
+                    if (parkedVehicles[i, 1] != null)
+                    {
+                        Console.Write(string.Format("{0, -16}", $"Parking spot {i + 1} "));
+                        parkedVehicles[i, 1].VehicleInfo();
+                    }
+                    else
+                    {
+                        Console.Write(string.Format("{0, -16}", $"Parking spot {i + 1}"));
+                        Console.Write("| has one more empty spot for a bike\n");
+                    }
+                }
+                else if (parkedVehicles[i, 0] != null)
+                {
+                    Console.Write(string.Format("{0, -16}", $"Parking spot {i + 1} "));
+                    parkedVehicles[i, 0].VehicleInfo();
+                }
+                else if (parkedVehicles[i, 1] != null)
+                {
+                    Console.Write(string.Format("{0, -16}", $"Parking spot {i + 1}"));
+                    Console.Write("| has one more empty spot for a bike\n");
+
+                    Console.Write(string.Format("{0, -16}", $"Parking spot {i + 1} "));
+                    parkedVehicles[i, 1].VehicleInfo();
+                }
+                else
+                {
+                    Console.Write(string.Format("{0, -16}", $"Parking spot {i + 1}"));
+                    Console.Write("| is empty\n");
+                }
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
-        public static void GenerateMenu(Vehicle[,] vehicles)
+        public static void GenerateMenu(Vehicle[,] parkedVehicles)
         {
-            Console.WriteLine("==========================");
+            Console.WriteLine("=================================================================================");
             Console.WriteLine("1. Park vehicle");
             Console.WriteLine("2. Un-park vehicle");
-            Console.WriteLine("3. ------");
-            Console.WriteLine("==========================");
+            Console.WriteLine("=================================================================================");
             ConsoleKeyInfo key = Console.ReadKey(true);
 
             switch (key.KeyChar)
             {
                 case '1':
                     Console.Clear();
-                    ParkVehicle(vehicles);
+                    ParkVehicle(parkedVehicles);
                     break;
                 case '2':
-                    UnParkVehicle(vehicles);
-                    break;
-                case '3':
+                    UnParkVehicle(parkedVehicles);
                     break;
             }
         }
-        public static void UnParkVehicle(Vehicle[,] vehicles)
+        public static void UnParkVehicle(Vehicle[,] parkedVehicles)
         {
             Console.WriteLine("What is the license plate of the vehicle to un-park?");
             string plate = Console.ReadLine().ToUpper();
-            for (int j = 0; j < vehicles.GetLength(1); j++)
+            for (int j = 0; j < parkedVehicles.GetLength(1); j++)
             {
-                for (int i = 0; i < vehicles.GetLength(0); i++)
+                for (int i = 0; i < parkedVehicles.GetLength(0); i++)
                 {
-                    if (vehicles[i, j] != null)
+                    if (parkedVehicles[i, j] != null)
                     {
-                        if (vehicles[i, j].LicensePlate == plate || vehicles[i, j].LicensePlate.Remove(3, 1) == plate)
+                        if (parkedVehicles[i, j].LicensePlate == plate || parkedVehicles[i, j].LicensePlate.Remove(3, 1) == plate)
                         {
-                            if (vehicles[i, j] is Bus)
+                            Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("REMOVED:\t");
+                            parkedVehicles[i, j].VehicleInfo();
+                            Console.Write("From spot " + (i + 1));
+
+                            if (parkedVehicles[i, j] is Bus)
                             {
-                                Console.Clear();
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.Write("REMOVED: ");
-                                vehicles[i, j].VehicleInfo();
-                                Console.WriteLine("From spot " + (i + 1) + " and " + (i + 2));
+                                Console.Write(" and " + (i + 2) + "\n");
                                 Console.ForegroundColor = ConsoleColor.White;
-                                vehicles[i, j] = null;
-                                vehicles[i + 1, j] = null;
+                                parkedVehicles[i, j] = null;
+                                parkedVehicles[i + 1, j] = null;
                                 return;
                             }
                             else
                             {
-                                Console.Clear();
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.Write("REMOVED: ");
-                                vehicles[i, j].VehicleInfo();
-                                Console.WriteLine("From spot " + (i + 1));
                                 Console.ForegroundColor = ConsoleColor.White;
-                                vehicles[i, j] = null;
+                                Console.WriteLine();
+                                parkedVehicles[i, j] = null;
                                 return;
                             }
-
                         }
                         else
                         {
                             Console.Clear();
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.WriteLine("No matching license plate - No vehicle removed\n");
+                            Console.ForegroundColor = ConsoleColor.DarkGray;
+                            Console.WriteLine($"No license plate matching {plate} - No vehicle removed\n");
                             Console.ForegroundColor = ConsoleColor.White;
                         }
                     }
                 }
             }
         }
-        public static void ParkVehicle(Vehicle[,] vehicles)
+        public static void ParkVehicle(Vehicle[,] parkedVehicles)
         {
             Random random = new Random();
             int k = random.Next(0, 3);
@@ -130,39 +136,39 @@ namespace DeluxeParking
             {
                 case 0:
                     Car car = new Car(GenerateRandomPlate(), GenerateColor(), random.Next(0, 2) == 1 ? true : false);
-                    for (int i = 0; i < vehicles.GetLength(0); i++)
+                    for (int i = 0; i < parkedVehicles.GetLength(0); i++)
                     {
-                        if (vehicles[i, 0] == null && vehicles[i, 1] == null)
+                        if (parkedVehicles[i, 0] == null && parkedVehicles[i, 1] == null)
                         {
-                            vehicles[i, 0] = car;
+                            parkedVehicles[i, 0] = car;
                             break;
                         }
                     }
                     break;
                 case 1:
                     Motorcycle motorcycle = new Motorcycle(GenerateRandomPlate(), GenerateColor(), "Honda");
-                    for (int i = 0; i < vehicles.GetLength(0); i++)
+                    for (int i = 0; i < parkedVehicles.GetLength(0); i++)
                     {
-                        if (vehicles[i, 0] is Motorcycle && vehicles[i, 1] == null)
+                        if (parkedVehicles[i, 0] is Motorcycle && parkedVehicles[i, 1] == null)
                         {
-                            vehicles[i, 1] = motorcycle;
+                            parkedVehicles[i, 1] = motorcycle;
                             break;
                         }
-                        else if (vehicles[i, 0] == null)
+                        else if (parkedVehicles[i, 0] == null)
                         {
-                            vehicles[i, 0] = motorcycle;
+                            parkedVehicles[i, 0] = motorcycle;
                             break;
                         }
                     }
                     break;
                 case 2:
                     Bus bus = new Bus(GenerateRandomPlate(), GenerateColor(), random.Next(20, 40));
-                    for (int i = vehicles.GetLength(0) - 1; i > 0; i--)
+                    for (int i = parkedVehicles.GetLength(0) - 1; i > 0; i--)
                     {
-                        if (vehicles[i, 0] == null && vehicles[i, 1] == null && vehicles[i - 1, 0] == null)
+                        if (parkedVehicles[i, 0] == null && parkedVehicles[i, 1] == null && parkedVehicles[i - 1, 0] == null)
                         {
-                            vehicles[i, 0] = bus;
-                            vehicles[i - 1, 0] = bus;
+                            parkedVehicles[i, 0] = bus;
+                            parkedVehicles[i - 1, 0] = bus;
                             break;
                         }
                     }
@@ -184,7 +190,6 @@ namespace DeluxeParking
                 int t = (char)(random.Next(0, 10));
                 plate += t;
             }
-
             return plate;
         }
         public static string GenerateColor()

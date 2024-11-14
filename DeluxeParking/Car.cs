@@ -16,7 +16,7 @@ namespace DeluxeParking
         public override void VehicleInfo()
         {
             base.VehicleInfo();
-            Console.WriteLine($"Car | {LicensePlate} | Color: {Color} | Electric: {Electric}");
+            Console.WriteLine($"| Car\t\t | {LicensePlate} | Color: {Color} \t| Electric: {Electric}");
         }
     }
 }
