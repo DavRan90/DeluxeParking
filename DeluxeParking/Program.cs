@@ -16,6 +16,10 @@ namespace DeluxeParking
                 WriteParking(parkedVehicles);
             }
         }
+        /// <summary>
+        /// Write menu for choices
+        /// </summary>
+        /// <param name="parkedVehicles"></param>
         public static void GenerateMenu(Vehicle[,] parkedVehicles)
         {
             Console.WriteLine("==================================================================================================================");
@@ -33,8 +37,16 @@ namespace DeluxeParking
                 case '2':
                     UnParkVehicle(parkedVehicles);
                     break;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Invalid input!");
+                    break;
             }
         }
+        /// <summary>
+        /// Write parking information
+        /// </summary>
+        /// <param name="parkedVehicles"></param>
         public static void WriteParking(Vehicle[,] parkedVehicles)
         {
             Console.WriteLine("==================================================================================================================");
@@ -92,6 +104,10 @@ namespace DeluxeParking
                 Console.ForegroundColor = ConsoleColor.White;
             }
         }
+        /// <summary>
+        /// Method to un-park a vehicle
+        /// </summary>
+        /// <param name="parkedVehicles"></param>
         public static void UnParkVehicle(Vehicle[,] parkedVehicles)
         {
             Console.WriteLine("What is the license plate of the vehicle to un-park?");
@@ -138,6 +154,10 @@ namespace DeluxeParking
                 }
             }
         }
+        /// <summary>
+        /// Method to park a vehicle
+        /// </summary>
+        /// <param name="parkedVehicles"></param>
         public static void ParkVehicle(Vehicle[,] parkedVehicles)
         {
             Random random = new Random();
@@ -185,6 +205,10 @@ namespace DeluxeParking
                     break;
             }
         }
+        /// <summary>
+        /// Method to generate a random license plate
+        /// </summary>
+        /// <returns>A randomly generated plate</returns>
         public static string GenerateRandomPlate()
         {
             Random random = new Random();
@@ -202,6 +226,10 @@ namespace DeluxeParking
             }
             return plate;
         }
+        /// <summary>
+        /// Generates a random color
+        /// </summary>
+        /// <returns>A random color</returns>
         public static string GenerateColor()
         {
             Random random = new Random();
